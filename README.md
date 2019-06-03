@@ -47,7 +47,7 @@ The core of our proposed model are crossmodal transformer and crossmodal attenti
 
 Data files (containing processed MOSI, MOSEI and IEMOCAP datasets) can be downloaded from [here](https://www.dropbox.com/sh/hyzpgx1hp9nj37s/AAB7FhBqJOFDw2hEyvv2ZXHxa?dl=0).
 
-For more details, please refer to [SDK for these datasets](https://github.com/A2Zadeh/CMU-MultimodalSDK). To retrieve the meta information and the raw data, please refer to the SDK.
+To retrieve the meta information and the raw data, please refer to the [SDK for these datasets](https://github.com/A2Zadeh/CMU-MultimodalSDK).
 
 ### Run the Code
 
