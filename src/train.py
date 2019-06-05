@@ -261,4 +261,4 @@ def train_model(settings, hyp_params, train_loader, valid_loader, test_loader):
         eval_iemocap(results, truths)
 
     sys.stdout.flush()
-    input('CONTINUE?')
+    input('[Press Any Key to start another run]')

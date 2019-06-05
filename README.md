@@ -4,14 +4,16 @@
 
 > Pytorch implementation for learning Multimodal Transformer for unaligned multimodal language sequences.
 
-Contact: Yao-Hung Hubert Tsai (yaohungt@cs.cmu.edu) and Shaojie Bai (shaojieb@andrew.cmu.edu)
+Correspondence to: 
+  - Yao-Hung Hubert Tsai (yaohungt@cs.cmu.edu)
+  - Shaojie Bai (shaojieb@andrew.cmu.edu)
 
 ## Paper
-[Multimodal Transformer for Unaligned Multimodal Language Sequences](https://arxiv.org/pdf/1906.00295.pdf)<br>
+[**Multimodal Transformer for Unaligned Multimodal Language Sequences**](https://arxiv.org/pdf/1906.00295.pdf)<br>
 [Yao-Hung Hubert Tsai](https://yaohungt.github.io) *, [Shaojie Bai](https://jerrybai1995.github.io) *, [Paul Pu Liang](http://www.cs.cmu.edu/~pliang/), [J. Zico Kolter](http://zicokolter.com), [Louis-Philippe Morency](https://www.cs.cmu.edu/~morency/), and [Ruslan Salakhutdinov](https://www.cs.cmu.edu/~rsalakhu/)<br>
 Association for Computational Linguistics (ACL), 2019. (*equal contribution)
 
-Please cite our paper if you find the code, dataset, or the experimental setting useful for your research.
+Please cite our paper if you find our work useful for your research.
 ```
 @inproceedings{tsai2019MULT,
   title={Multimodal Transformer for Unaligned Multimodal Language Sequences},

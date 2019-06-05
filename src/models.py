@@ -35,7 +35,6 @@ class MULTModel(nn.Module):
         else:
             combined_dim = 2 * (self.d_l + self.d_a + self.d_v)
         
-        fused_dim = 100
         output_dim = hyp_params.output_dim        # This is actually not a hyperparameter :-)
 
         # 1. Temporal convolutional layers
@@ -79,8 +78,7 @@ class MULTModel(nn.Module):
         elif self_type == 'v_mem':
             embed_dim, attn_dropout = 2*self.d_v, self.attn_dropout
         else:
-            print("*** WARNING ***")
-            embed_dim, attn_dropout = 2*self.d_v, self.attn_dropout
+            raise ValueError("Unknown network type")
         
         return TransformerEncoder(embed_dim=embed_dim,
                                   num_heads=self.num_heads,
