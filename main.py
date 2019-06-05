@@ -35,7 +35,7 @@ parser.add_argument('--attn_dropout_v', type=float, default=0.0,
                     help='attention dropout (for visual)')
 parser.add_argument('--relu_dropout', type=float, default=0.1,
                     help='relu dropout')
-parser.add_argument('--embed_dropout', type=float, default=0.2,
+parser.add_argument('--embed_dropout', type=float, default=0.25,
                     help='embedding dropout')
 parser.add_argument('--res_dropout', type=float, default=0.1,
                     help='residual block dropout')
@@ -53,8 +53,8 @@ parser.add_argument('--attn_mask', action='store_false',
 # Tuning
 parser.add_argument('--batch_size', type=int, default=24, metavar='N',
                     help='batch size (default: 24)')
-parser.add_argument('--clip', type=float, default=1.0,
-                    help='gradient clip value (default: 1.0)')
+parser.add_argument('--clip', type=float, default=0.8,
+                    help='gradient clip value (default: 0.8)')
 parser.add_argument('--lr', type=float, default=1e-3,
                     help='initial learning rate (default: 1e-3)')
 parser.add_argument('--optim', type=str, default='Adam',
@@ -73,8 +73,8 @@ parser.add_argument('--seed', type=int, default=1111,
                     help='random seed')
 parser.add_argument('--no_cuda', action='store_true',
                     help='do not use cuda')
-parser.add_argument('--name', type=str, default='',
-                    help='name of the trial (default: "")')
+parser.add_argument('--name', type=str, default='mult',
+                    help='name of the trial (default: "mult")')
 args = parser.parse_args()
 
 torch.manual_seed(args.seed)

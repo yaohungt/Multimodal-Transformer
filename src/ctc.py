@@ -1,12 +1,13 @@
 import torch
 from torch import nn
 
+
 class CTCModule(nn.Module):
     def __init__(self, in_dim, out_seq_len):
         '''
-        This module is performing alignment from A (i.e., audio) to B (i.e., text).
-        :param dim: Dim for A
-        :param out_seq_len: Sequence length for B
+        This module is performing alignment from A (e.g., audio) to B (e.g., text).
+        :param in_dim: Dimension for input modality A
+        :param out_seq_len: Sequence length for output modality B
         '''
         super(CTCModule, self).__init__()
         # Use LSTM for predicting the position from A to B
@@ -17,7 +18,7 @@ class CTCModule(nn.Module):
         self.softmax = nn.Softmax(dim=2)
     def forward(self, x):
         '''
-        :input x: A (audio), should have shape batch_size x in_seq_len x in_dim
+        :input x: Input with shape [batch_size x in_seq_len x in_dim]
         '''
         # NOTE that the index 0 refers to blank. 
         pred_output_position_inclu_blank, _ = self.pred_output_position_inclu_blank(x)
