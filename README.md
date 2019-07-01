@@ -13,13 +13,17 @@ Correspondence to:
 [Yao-Hung Hubert Tsai](https://yaohungt.github.io) *, [Shaojie Bai](https://jerrybai1995.github.io) *, [Paul Pu Liang](http://www.cs.cmu.edu/~pliang/), [J. Zico Kolter](http://zicokolter.com), [Louis-Philippe Morency](https://www.cs.cmu.edu/~morency/), and [Ruslan Salakhutdinov](https://www.cs.cmu.edu/~rsalakhu/)<br>
 Association for Computational Linguistics (ACL), 2019. (*equal contribution)
 
-Please cite our paper if you find our work useful for your research.
-```
+Please cite our paper if you find our work useful for your research:
+
+```tex
 @inproceedings{tsai2019MULT,
   title={Multimodal Transformer for Unaligned Multimodal Language Sequences},
-  author={Tsai, Yao-Hung Hubert and Bai, Shaojie and Liang, Paul Pu and and Kolter, J. Zico and Morency, Louis-Philippe and Salakhutdinov, Ruslan},
-  booktitle={Proceedings of the 56th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)},
-  year={2019}
+  author={Tsai, Yao-Hung Hubert and Bai, Shaojie and Liang, Paul Pu and Kolter, J. Zico and Morency, Louis-Philippe and Salakhutdinov, Ruslan},
+  booktitle={Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)},
+  month = {7},
+  year={2019},
+  address = {Florence, Italy},
+  publisher = {Association for Computational Linguistics},
 }
 ```
 
