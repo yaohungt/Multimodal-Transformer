@@ -53,6 +53,7 @@ class Multimodal_Datasets(Dataset):
         META = (0,0,0) if self.meta is None else (self.meta[index][0], self.meta[index][1], self.meta[index][2])
         if self.data == 'mosi':
             META = (self.meta[index][0].decode('UTF-8'), self.meta[index][1].decode('UTF-8'), self.meta[index][2].decode('UTF-8'))
-        
+        if self.data == 'iemocap':
+            Y = torch.argmax(Y, dim=-1)
         return X, Y, META        
 
