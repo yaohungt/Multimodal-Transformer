@@ -96,8 +96,6 @@ output_dim_dict = {
     'iemocap': 8
 }
 
-print(f"output_dim_dict: {output_dim_dict}")
-
 criterion_dict = {
     'iemocap': 'CrossEntropyLoss'
 }
@@ -121,15 +119,16 @@ print(f"use_cuda: {use_cuda}")
 
 print("Start loading the data....")
 
+print("getting train data....")
 train_data = get_data(args, dataset, 'train')
+print("getting validation(valid) data....")
 valid_data = get_data(args, dataset, 'valid')
+print("getting test data....")
 test_data = get_data(args, dataset, 'test')
-
+   
 train_loader = DataLoader(train_data, batch_size=args.batch_size, shuffle=True)
 valid_loader = DataLoader(valid_data, batch_size=args.batch_size, shuffle=True)
 test_loader = DataLoader(test_data, batch_size=args.batch_size, shuffle=True)
-
-print("DataLoader association finshied....")
 
 print('Finish loading the data....')
 if not args.aligned:
@@ -157,4 +156,3 @@ hyp_params.criterion = criterion_dict.get(dataset, 'L1Loss')
 
 if __name__ == '__main__':
     test_loss = train.initiate(hyp_params, train_loader, valid_loader, test_loader)
-

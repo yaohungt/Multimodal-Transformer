@@ -39,7 +39,10 @@ class Multimodal_Datasets(Dataset):
         self.meta = dataset[split_type]['id'] if 'id' in dataset[split_type].keys() else None
        
         self.data = data
-        
+
+        # delete to clear of pre-occupied space in the memory by the pickled file
+        del dataset
+
         self.n_modalities = 3 # vision/ text/ audio
     def get_n_modalities(self):
         return self.n_modalities
