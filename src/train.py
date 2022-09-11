@@ -33,15 +33,21 @@ def initiate(hyp_params, train_loader, valid_loader, test_loader):
     model = getattr(models, hyp_params.model+'Model')(hyp_params)
 
     if hyp_params.use_cuda:
-        model = model.cuda()
+        # model = model.cuda()
+        model = model.to("cuda")
+        print(next(model.parameters()).device)
 
     optimizer = getattr(optim, hyp_params.optim)(model.parameters(), lr=hyp_params.lr)
+    print(f"optimizer: {optimizer}")
     criterion = getattr(nn, hyp_params.criterion)()
+    print(f"criterion: {criterion}")
     if hyp_params.aligned or hyp_params.model=='MULT':
+        print("initialising training parameters for aligned data....")
         ctc_criterion = None
         ctc_a2l_module, ctc_v2l_module = None, None
         ctc_a2l_optimizer, ctc_v2l_optimizer = None, None
     else:
+        print("initialising training parameters for non-aligned data....")
         from warpctc_pytorch import CTCLoss
         ctc_criterion = CTCLoss()
         ctc_a2l_module, ctc_v2l_module = get_CTC_module(hyp_params)
@@ -51,6 +57,7 @@ def initiate(hyp_params, train_loader, valid_loader, test_loader):
         ctc_v2l_optimizer = getattr(optim, hyp_params.optim)(ctc_v2l_module.parameters(), lr=hyp_params.lr)
     
     scheduler = ReduceLROnPlateau(optimizer, mode='min', patience=hyp_params.when, factor=0.1, verbose=True)
+    print(f"scheduler: {scheduler}")
     settings = {'model': model,
                 'optimizer': optimizer,
                 'criterion': criterion,
@@ -60,6 +67,7 @@ def initiate(hyp_params, train_loader, valid_loader, test_loader):
                 'ctc_v2l_optimizer': ctc_v2l_optimizer,
                 'ctc_criterion': ctc_criterion,
                 'scheduler': scheduler}
+    print(f"training args/config: {settings}")            
     return train_model(settings, hyp_params, train_loader, valid_loader, test_loader)
 
 
