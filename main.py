@@ -79,7 +79,9 @@ args = parser.parse_args()
 
 torch.manual_seed(args.seed)
 dataset = str.lower(args.dataset.strip())
+print(f"dataset: {dataset}")
 valid_partial_mode = args.lonly + args.vonly + args.aonly
+print(f"valid_partial_mode: {valid_partial_mode}")
 
 if valid_partial_mode == 0:
     args.lonly = args.vonly = args.aonly = True
@@ -94,6 +96,8 @@ output_dim_dict = {
     'iemocap': 8
 }
 
+print(f"output_dim_dict: {output_dim_dict}")
+
 criterion_dict = {
     'iemocap': 'CrossEntropyLoss'
 }
@@ -107,6 +111,8 @@ if torch.cuda.is_available():
         torch.set_default_tensor_type('torch.cuda.FloatTensor')
         use_cuda = True
 
+print(f"use_cuda: {use_cuda}")
+
 ####################################################################
 #
 # Load the dataset (aligned or non-aligned)
@@ -118,10 +124,12 @@ print("Start loading the data....")
 train_data = get_data(args, dataset, 'train')
 valid_data = get_data(args, dataset, 'valid')
 test_data = get_data(args, dataset, 'test')
-   
+
 train_loader = DataLoader(train_data, batch_size=args.batch_size, shuffle=True)
 valid_loader = DataLoader(valid_data, batch_size=args.batch_size, shuffle=True)
 test_loader = DataLoader(test_data, batch_size=args.batch_size, shuffle=True)
+
+print("DataLoader association finshied....")
 
 print('Finish loading the data....')
 if not args.aligned:
