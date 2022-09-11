@@ -127,11 +127,11 @@ print("getting test data....")
 test_data = get_data(args, dataset, 'test')
    
 print("using DataLoader for train data....")
-train_loader = DataLoader(train_data, batch_size=args.batch_size, shuffle=True)
+train_loader = DataLoader(train_data, batch_size=args.batch_size, shuffle=True, generator=torch.Generator(device="cuda" if use_cuda else "cpu"))
 print("using DataLoader for validation(valid) data....")
-valid_loader = DataLoader(valid_data, batch_size=args.batch_size, shuffle=True)
+valid_loader = DataLoader(valid_data, batch_size=args.batch_size, shuffle=True, generator=torch.Generator(device="cuda" if use_cuda else "cpu"))
 print("using DataLoader for test data....")
-test_loader = DataLoader(test_data, batch_size=args.batch_size, shuffle=True)
+test_loader = DataLoader(test_data, batch_size=args.batch_size, shuffle=True, generator=torch.Generator(device="cuda" if use_cuda else "cpu"))
 
 print('Finish loading the data....')
 if not args.aligned:
