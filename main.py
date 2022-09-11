@@ -126,8 +126,11 @@ valid_data = get_data(args, dataset, 'valid')
 print("getting test data....")
 test_data = get_data(args, dataset, 'test')
    
+print("using DataLoader for train data....")
 train_loader = DataLoader(train_data, batch_size=args.batch_size, shuffle=True)
+print("using DataLoader for validation(valid) data....")
 valid_loader = DataLoader(valid_data, batch_size=args.batch_size, shuffle=True)
+print("using DataLoader for test data....")
 test_loader = DataLoader(test_data, batch_size=args.batch_size, shuffle=True)
 
 print('Finish loading the data....')
@@ -139,6 +142,8 @@ if not args.aligned:
 # Hyperparameters
 #
 ####################################################################
+
+print("initialising hyperparameters and assign arguments....") 
 
 hyp_params = args
 hyp_params.orig_d_l, hyp_params.orig_d_a, hyp_params.orig_d_v = train_data.get_dim()
