@@ -79,7 +79,9 @@ args = parser.parse_args()
 
 torch.manual_seed(args.seed)
 dataset = str.lower(args.dataset.strip())
+print(f"dataset: {dataset}")
 valid_partial_mode = args.lonly + args.vonly + args.aonly
+print(f"valid_partial_mode: {valid_partial_mode}")
 
 if valid_partial_mode == 0:
     args.lonly = args.vonly = args.aonly = True
@@ -107,6 +109,8 @@ if torch.cuda.is_available():
         torch.set_default_tensor_type('torch.cuda.FloatTensor')
         use_cuda = True
 
+print(f"use_cuda: {use_cuda}")
+
 ####################################################################
 #
 # Load the dataset (aligned or non-aligned)
@@ -115,13 +119,19 @@ if torch.cuda.is_available():
 
 print("Start loading the data....")
 
+print("getting train data....")
 train_data = get_data(args, dataset, 'train')
+print("getting validation(valid) data....")
 valid_data = get_data(args, dataset, 'valid')
+print("getting test data....")
 test_data = get_data(args, dataset, 'test')
    
-train_loader = DataLoader(train_data, batch_size=args.batch_size, shuffle=True)
-valid_loader = DataLoader(valid_data, batch_size=args.batch_size, shuffle=True)
-test_loader = DataLoader(test_data, batch_size=args.batch_size, shuffle=True)
+print("using DataLoader for train data....")
+train_loader = DataLoader(train_data, batch_size=args.batch_size, shuffle=True, generator=torch.Generator(device="cuda" if use_cuda else "cpu"))
+print("using DataLoader for validation(valid) data....")
+valid_loader = DataLoader(valid_data, batch_size=args.batch_size, shuffle=True, generator=torch.Generator(device="cuda" if use_cuda else "cpu"))
+print("using DataLoader for test data....")
+test_loader = DataLoader(test_data, batch_size=args.batch_size, shuffle=True, generator=torch.Generator(device="cuda" if use_cuda else "cpu"))
 
 print('Finish loading the data....')
 if not args.aligned:
@@ -132,6 +142,8 @@ if not args.aligned:
 # Hyperparameters
 #
 ####################################################################
+
+print("initialising hyperparameters and assign arguments....") 
 
 hyp_params = args
 hyp_params.orig_d_l, hyp_params.orig_d_a, hyp_params.orig_d_v = train_data.get_dim()
@@ -149,4 +161,3 @@ hyp_params.criterion = criterion_dict.get(dataset, 'L1Loss')
 
 if __name__ == '__main__':
     test_loss = train.initiate(hyp_params, train_loader, valid_loader, test_loader)
-

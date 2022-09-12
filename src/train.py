@@ -7,6 +7,7 @@ from src.utils import *
 import torch.optim as optim
 import numpy as np
 import time
+from tqdm.auto import tqdm
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 import os
 import pickle
@@ -33,15 +34,21 @@ def initiate(hyp_params, train_loader, valid_loader, test_loader):
     model = getattr(models, hyp_params.model+'Model')(hyp_params)
 
     if hyp_params.use_cuda:
-        model = model.cuda()
+        # model = model.cuda()
+        model = model.to("cuda")
+        print(next(model.parameters()).device)
 
     optimizer = getattr(optim, hyp_params.optim)(model.parameters(), lr=hyp_params.lr)
+    print(f"optimizer: {optimizer}")
     criterion = getattr(nn, hyp_params.criterion)()
+    print(f"criterion: {criterion}")
     if hyp_params.aligned or hyp_params.model=='MULT':
+        print("initialising training parameters for aligned data....")
         ctc_criterion = None
         ctc_a2l_module, ctc_v2l_module = None, None
         ctc_a2l_optimizer, ctc_v2l_optimizer = None, None
     else:
+        print("initialising training parameters for non-aligned data....")
         from warpctc_pytorch import CTCLoss
         ctc_criterion = CTCLoss()
         ctc_a2l_module, ctc_v2l_module = get_CTC_module(hyp_params)
@@ -51,6 +58,7 @@ def initiate(hyp_params, train_loader, valid_loader, test_loader):
         ctc_v2l_optimizer = getattr(optim, hyp_params.optim)(ctc_v2l_module.parameters(), lr=hyp_params.lr)
     
     scheduler = ReduceLROnPlateau(optimizer, mode='min', patience=hyp_params.when, factor=0.1, verbose=True)
+    print(f"scheduler: {scheduler}")
     settings = {'model': model,
                 'optimizer': optimizer,
                 'criterion': criterion,
@@ -60,6 +68,7 @@ def initiate(hyp_params, train_loader, valid_loader, test_loader):
                 'ctc_v2l_optimizer': ctc_v2l_optimizer,
                 'ctc_criterion': ctc_criterion,
                 'scheduler': scheduler}
+    print(f"training args/config: {settings}")            
     return train_model(settings, hyp_params, train_loader, valid_loader, test_loader)
 
 
@@ -85,11 +94,15 @@ def train_model(settings, hyp_params, train_loader, valid_loader, test_loader):
 
     def train(model, optimizer, criterion, ctc_a2l_module, ctc_v2l_module, ctc_a2l_optimizer, ctc_v2l_optimizer, ctc_criterion):
         epoch_loss = 0
+        print("setting model to train config....")
         model.train()
         num_batches = hyp_params.n_train // hyp_params.batch_size
+        print(f"num_batches: {num_batches}")
         proc_loss, proc_size = 0, 0
         start_time = time.time()
+        print(f"start_time: {start_time}")
         for i_batch, (batch_X, batch_Y, batch_META) in enumerate(train_loader):
+            print(f"batch: {i_batch}")
             sample_ind, text, audio, vision = batch_X
             eval_attr = batch_Y.squeeze(-1)   # if num of labels is 1
             
@@ -233,6 +246,7 @@ def train_model(settings, hyp_params, train_loader, valid_loader, test_loader):
     best_valid = 1e8
     for epoch in range(1, hyp_params.num_epochs+1):
         start = time.time()
+        print("start train procedure....")
         train(model, optimizer, criterion, ctc_a2l_module, ctc_v2l_module, ctc_a2l_optimizer, ctc_v2l_optimizer, ctc_criterion)
         val_loss, _, _ = evaluate(model, ctc_a2l_module, ctc_v2l_module, criterion, test=False)
         test_loss, _, _ = evaluate(model, ctc_a2l_module, ctc_v2l_module, criterion, test=True)

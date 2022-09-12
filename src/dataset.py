@@ -20,21 +20,29 @@ class Multimodal_Datasets(Dataset):
     def __init__(self, dataset_path, data='mosei_senti', split_type='train', if_align=False):
         super(Multimodal_Datasets, self).__init__()
         dataset_path = os.path.join(dataset_path, data+'_data.pkl' if if_align else data+'_data_noalign.pkl' )
+        print(dataset_path)
         dataset = pickle.load(open(dataset_path, 'rb'))
-
+        
         # These are torch tensors
         self.vision = torch.tensor(dataset[split_type]['vision'].astype(np.float32)).cpu().detach()
+        print(self.vision.shape)
         self.text = torch.tensor(dataset[split_type]['text'].astype(np.float32)).cpu().detach()
+        print(self.text.shape)
         self.audio = dataset[split_type]['audio'].astype(np.float32)
         self.audio[self.audio == -np.inf] = 0
         self.audio = torch.tensor(self.audio).cpu().detach()
+        print(self.audio.shape)
         self.labels = torch.tensor(dataset[split_type]['labels'].astype(np.float32)).cpu().detach()
+        print(self.labels.shape)
         
         # Note: this is STILL an numpy array
         self.meta = dataset[split_type]['id'] if 'id' in dataset[split_type].keys() else None
        
         self.data = data
-        
+
+        # delete to clear of pre-occupied space in the memory by the pickled file
+        del dataset
+
         self.n_modalities = 3 # vision/ text/ audio
     def get_n_modalities(self):
         return self.n_modalities
@@ -56,4 +64,3 @@ class Multimodal_Datasets(Dataset):
         if self.data == 'iemocap':
             Y = torch.argmax(Y, dim=-1)
         return X, Y, META        
-
